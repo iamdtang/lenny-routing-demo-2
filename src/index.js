@@ -2,10 +2,16 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  redirect,
+  RouterProvider,
+} from "react-router-dom";
 import Index from "./routes/Index";
 import Root from "./routes/Root";
 import "bootstrap/dist/css/bootstrap.css";
+import { deleteHobby, fetchHobbies, fetchHobby, saveHobby } from "./api";
+import HobbyForm from "./routes/HobbyForm";
 
 const router = createBrowserRouter([
   {
@@ -16,7 +22,54 @@ const router = createBrowserRouter([
         path: "/",
         element: <Index />,
         loader() {
-          return [];
+          return fetchHobbies();
+        },
+        async action({ request }) {
+          const formData = await request.formData();
+          const id = formData.get("hobbyId");
+
+          await deleteHobby(id);
+          return redirect("/");
+        },
+      },
+      {
+        path: "/hobbies/new",
+        element: <HobbyForm />,
+        // action({ request }) {
+        //   return request.formData().then((formData) => {
+        //     return saveHobby({
+        //       name: formData.get("name"),
+        //       years: formData.get("years"),
+        //     }).then(() => {
+        //       return redirect("/");
+        //     });
+        //   });
+        // },
+        async action({ request }) {
+          const formData = await request.formData();
+          await saveHobby({
+            name: formData.get("name"),
+            years: formData.get("years"),
+          });
+
+          return redirect("/");
+        },
+      },
+      {
+        path: "/hobbies/:id",
+        element: <HobbyForm />,
+        loader({ params }) {
+          return fetchHobby(params.id);
+        },
+        async action({ request }) {
+          const formData = await request.formData();
+          await saveHobby({
+            id: formData.get("hobbyId"),
+            name: formData.get("name"),
+            years: formData.get("years"),
+          });
+
+          return redirect("/");
         },
       },
     ],
