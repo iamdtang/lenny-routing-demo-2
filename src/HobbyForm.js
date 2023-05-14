@@ -1,15 +1,11 @@
-import { Form, useLoaderData } from "react-router-dom";
+import { Form } from "react-router-dom";
 
-export default function HobbyForm() {
-  const hobby = useLoaderData();
-
-  console.log(hobby);
-
+export default function HobbyForm({ hobby, title }) {
   return (
     <div>
-      <h1>{hobby?.id ? `Edit hobby ${hobby.name}` : "Create Hobby"}</h1>
+      <h1>{title}</h1>
       <Form method="post">
-        <input type="hidden" name="hobbyId" value={hobby?.id} />
+        <input type="hidden" name="hobbyId" defaultValue={hobby?.id} />
         <div className="form-floating mb-3">
           <input
             type="text"
