@@ -1,8 +1,13 @@
+import { useEffect } from "react";
 import { useLoaderData, Form, Link, useSearchParams } from "react-router-dom";
 
 export default function Index() {
   const hobbies = useLoaderData();
   const [searchParams, setSearchParams] = useSearchParams();
+
+  useEffect(() => {
+    document.title = "Home";
+  }, []);
 
   let filteredHobbies = hobbies;
 
