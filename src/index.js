@@ -11,7 +11,8 @@ import Index from "./routes/Index";
 import Root from "./routes/Root";
 import "bootstrap/dist/css/bootstrap.css";
 import { deleteHobby, fetchHobbies, fetchHobby, saveHobby } from "./api";
-import HobbyForm from "./routes/HobbyForm";
+import EditHobby from "./routes/EditHobby";
+import CreateHobby from "./routes/CreateHobby";
 
 const router = createBrowserRouter([
   {
@@ -34,7 +35,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/hobbies/new",
-        element: <HobbyForm />,
+        element: <CreateHobby />,
         // action({ request }) {
         //   return request.formData().then((formData) => {
         //     return saveHobby({
@@ -57,7 +58,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/hobbies/:id",
-        element: <HobbyForm />,
+        element: <EditHobby />,
         loader({ params }) {
           return fetchHobby(params.id);
         },
